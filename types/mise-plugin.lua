@@ -100,6 +100,7 @@ ARCH_TYPE = ""
 
 ---@class BackendListVersionsCtx
 ---@field tool string Tool name
+---@field options? table Per-tool options from mise.toml ([tools."backend:tool"])
 
 ---@class BackendListVersionsResult
 ---@field versions string[] List of available versions
@@ -108,6 +109,8 @@ ARCH_TYPE = ""
 ---@field tool string Tool name
 ---@field version string Version to install
 ---@field install_path string Path where the tool should be installed
+---@field download_path? string Scratch directory mise provides for downloads
+---@field options? table Per-tool options from mise.toml
 
 ---@class BackendInstallResult
 
@@ -115,6 +118,7 @@ ARCH_TYPE = ""
 ---@field tool string Tool name
 ---@field version string Installed version
 ---@field install_path string Installation path
+---@field options? table Per-tool options from mise.toml
 
 ---@class BackendExecEnvResult
 ---@field env_vars EnvKey[] Environment variables to set
