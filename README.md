@@ -110,6 +110,11 @@ A binary's stream is selected from the repo's tags by either scheme:
 
 ## Development
 
+The `test` task needs a standalone Lua 5.x on `PATH` (`brew install lua` or
+`apt-get install lua5.4`); or run it through mise with `mise x lua@5.4 -- lua test/run.lua`.
+Lua is deliberately not a mise tool here — mise builds it from the often-unreachable
+lua.org, so CI installs it from the OS instead.
+
 ```sh
 mise run test     # offline unit tests (pure logic; no network)
 mise run lint     # stylua + lua-language-server + actionlint via hk

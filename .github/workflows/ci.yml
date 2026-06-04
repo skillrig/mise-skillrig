@@ -10,11 +10,26 @@ on:
 jobs:
   ci:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      # The offline unit tests run under a standalone Lua. Install it from the OS
+      # (prebuilt) rather than mise, which would build it from the often-
+      # unreachable lua.org. Exposes a `lua` on PATH on both runners.
+      - name: Install Lua
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y lua5.4
+            sudo ln -sf "$(command -v lua5.4)" /usr/local/bin/lua
+          else
+            brew install lua
+          fi
+          lua -v
       - uses: jdx/mise-action@v2
       - run: mise run ci
         env:

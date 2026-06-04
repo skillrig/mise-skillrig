@@ -1,10 +1,14 @@
 [env]
 MISE_USE_VERSIONS_HOST = "0"
 
+# NOTE: `lua` (the interpreter, used only by the `test` task) is intentionally
+# NOT a mise tool here. mise builds Lua from source via lua.org, which is
+# unreliable from CI runners. Install it from your OS instead
+# (`brew install lua` / `apt-get install lua5.4`), or run tests with
+# `mise x lua@5.4 -- lua test/run.lua` locally. CI installs it via apt/brew.
 [tools]
 actionlint = "latest"
 hk = "latest"
-lua = "5.4"
 lua-language-server = "latest"
 pkl = "latest"
 stylua = "latest"
