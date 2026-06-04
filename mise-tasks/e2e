@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#MISE description="Live smoke test: link the plugin and resolve/install/run a real tool"
+#
+# Exercises all three hooks against a real skillrig origin. Private origins need
+# a token:  export MISE_GITHUB_TOKEN=$(gh auth token)
+#
+# Usage:
+#   mise run e2e                                   # defaults below
+#   ORIGIN=my-org/my-skills TOOL=jira VERSION=1.7.0 mise run e2e
+set -euo pipefail
+
+ORIGIN="${ORIGIN:-so0k/skillrig-origin-demo}"
+TOOL="${TOOL:-tfc}"
+VERSION="${VERSION:-0.0.6}"
+REF="skillrig:${ORIGIN}/${TOOL}"
+
+echo "==> linking plugin as 'skillrig'"
+mise plugin link --force skillrig "$(pwd)"
+mise cache clear
+
+echo "==> ls-remote ${REF}  (BackendListVersions)"
+mise ls-remote "${REF}"
+
+echo "==> install ${REF}@${VERSION}  (BackendInstall: download + checksum verify + extract)"
+mise install "${REF}@${VERSION}"
+
+echo "==> exec ${REF}@${VERSION} -- ${TOOL} version  (BackendExecEnv: PATH)"
+mise exec "${REF}@${VERSION}" -- "${TOOL}" version || mise exec "${REF}@${VERSION}" -- "${TOOL}" --version
+
+echo "==> OK"

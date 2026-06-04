@@ -1,0 +1,34 @@
+[env]
+MISE_USE_VERSIONS_HOST = "0"
+
+[tools]
+actionlint = "latest"
+hk = "latest"
+lua = "5.4"
+lua-language-server = "latest"
+pkl = "latest"
+stylua = "latest"
+
+[tasks.format]
+description = "Format Lua scripts"
+run = "stylua metadata.lua hooks/ lib/ test/"
+
+[tasks.test]
+description = "Run offline unit tests (pure logic; no network/mise modules)"
+run = "lua test/run.lua"
+
+[tasks.lint]
+description = "Lint Lua scripts and GitHub Actions using hk"
+run = "hk check"
+
+[tasks.lint-fix]
+description = "Fix linting issues"
+run = "hk fix"
+
+[tasks.ci]
+description = "Run all CI checks"
+depends = ["lint", "test"]
+
+[tasks.e2e]
+description = "Live smoke test against a real origin (needs MISE_GITHUB_TOKEN + an origin)"
+run = "mise-tasks/e2e"

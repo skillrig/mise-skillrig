@@ -1,0 +1,6 @@
+# luarocks project scaffolding (created if you run luarocks in-tree)
+/.luarocks/
+/lua_modules/
+
+# editor / OS cruft
+.DS_Store
